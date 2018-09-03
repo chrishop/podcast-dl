@@ -16,4 +16,6 @@ optional arguments:
   -D DATE_TO, --date-to DATE_TO           the newest date you want your podcasts in the format dd/mm/yy
                         
   -F, --force-download                    re-download podcasts even if they already exist
+  
+  -a, --all                               downloads all podcasts on the rss
 ```

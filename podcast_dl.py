@@ -49,7 +49,6 @@ def parse_args(args: argv) -> dict:
     date_group = parser.add_argument_group()
     date_exclusive_group.add_argument_group(date_group)
 
-
     parser.add_argument("urls"
                         , action="store"
                         , type=str
@@ -117,7 +116,17 @@ def get_podcasts(args: dict) -> None:
 
             # put into podcast object
             podcast = Podcast(feed.content)
-            message('Downloading ' + podcast.title + ' podcast from ' + args['date_from'] + ' to ' + args['date_to'])
+
+            # prints download info
+            if args['all']:
+                message('Downloading ' + podcast.title
+                            + ' podcast from --- to '
+                            + args['date_to'])
+            else:
+                message('Downloading ' + podcast.title
+                        + ' podcast from '
+                        + args['date_from'] + ' to ' + args['date_to'])
+
             # for items in podcast feed
             for item in podcast.items:
 
@@ -146,12 +155,11 @@ def safe_request(url: str) -> requests.api:
 def download(item, args: dict) -> None:
     # check file doesn't already exist
     if os.path.isfile(item.title + '.mp3') and not args['force_download']:
-        message('   episode already downloaded')
+        message('Already downloaded: ' + item.title)
     else:
         # download and save
         message('   downloading episode: ' + item.title + "...")
         file = safe_request(item.enclosure_url)
-        message('   writing to file...')
         open(item.title + '.mp3', 'wb').write(file.content)
 
 
